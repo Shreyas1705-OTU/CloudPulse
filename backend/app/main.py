@@ -1,17 +1,28 @@
 from fastapi import FastAPI
 
-# Create the FastAPI application
+from app.core.config import settings
+from app.routers.devices import router as device_router
+
 app = FastAPI(
-    title="CloudPulse API",
+    title=settings.APP_NAME,
     description="Cloud-native IoT Device Monitoring Platform",
-    version="1.0.0"
+    version=settings.APP_VERSION
+)
+
+# Version 1 API
+app.include_router(
+    device_router,
+    prefix="/api/v1"
 )
 
 
 @app.get("/")
 def root():
     return {
-        "application": "CloudPulse",
+        "application": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "environment": settings.ENVIRONMENT,
+        "debug": settings.DEBUG,
         "status": "running",
         "message": "Welcome to CloudPulse!"
     }
