@@ -5,7 +5,10 @@ from app.database.session import get_db
 from app.schemas.device import DeviceCreate, DeviceResponse
 from app.services.device_service import DeviceService
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/devices",
+    tags=["Devices"],
+)
 
 
 @router.get("/", response_model=list[DeviceResponse])
