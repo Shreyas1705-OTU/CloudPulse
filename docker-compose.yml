@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   postgres:
@@ -17,17 +15,24 @@ services:
     volumes:
       - cloudpulse-postgres-data:/var/lib/postgresql/data
 
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
 
     container_name: cloudpulse-backend
 
+    environment:
+      DATABASE_URL: postgresql://cloudpulse:cloudpulse123@postgres:5432/cloudpulse
+
     ports:
       - "8000:8000"
 
     depends_on:
       - postgres
+
+    restart: unless-stopped
 
 volumes:
   cloudpulse-postgres-data:
