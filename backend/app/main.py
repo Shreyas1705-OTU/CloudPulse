@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.routers.auth import router as auth_router
 from app.routers.devices import router as device_router
 from app.routers.readings import router as reading_router
+from app.routers.alerts import router as alert_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -29,6 +30,13 @@ app.include_router(
     reading_router,
     prefix="/api/v1",
 )
+
+# Alert APIs
+app.include_router(
+    alert_router,
+    prefix="/api/v1",
+)
+
 
 @app.get("/")
 def root():
