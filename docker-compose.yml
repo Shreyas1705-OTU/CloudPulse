@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: cloudpulse-postgres
+
+    environment:
+      POSTGRES_USER: cloudpulse
+      POSTGRES_PASSWORD: cloudpulse123
+      POSTGRES_DB: cloudpulse
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - cloudpulse-postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: cloudpulse-backend
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - postgres
+
+volumes:
+  cloudpulse-postgres-data:

@@ -1,12 +1,8 @@
-from app.services import device_service
+from sqlalchemy.orm import Session
+
+from app.database.session import get_db
+from app.services.device_service import DeviceService
 
 
-def get_device_service():
-    """
-    Returns the device service.
-
-    Later this function will return a database-backed
-    service instance.
-    """
-
-    return device_service
+def get_device_service(db: Session):
+    return DeviceService(db)

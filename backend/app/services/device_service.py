@@ -1,45 +1,57 @@
-from fastapi import HTTPException
+from sqlalchemy.orm import Session
 
-from app.core.logger import logger
-from app.schemas.device import Device
-
-
-DEVICES = [
-    Device(
-        id=1,
-        name="Temperature Sensor",
-        status="Online",
-        location="Warehouse A"
-    ),
-    Device(
-        id=2,
-        name="Pressure Sensor",
-        status="Offline",
-        location="Warehouse B"
-    ),
-    Device(
-        id=3,
-        name="Gateway Device",
-        status="Online",
-        location="Main Office"
-    )
-]
+from app.database.models import Device
 
 
-def get_all_devices():
-    logger.info("Returning all devices")
-    return DEVICES
+class DeviceService:
+    def __init__(self, db: Session):
+        self.db = db
 
+    def get_all_devices(self):
+        return self.db.query(Device).all()
 
-def get_device_by_id(device_id: int):
-    for device in DEVICES:
-        if device.id == device_id:
-            logger.info(f"Returning device with ID {device_id}")
-            return device
+    def get_device(self, device_id: int):
+        return (
+            self.db.query(Device)
+            .filter(Device.id == device_id)
+            .first()
+        )
 
-    logger.error(f"Device with ID {device_id} not found")
+    def create_device(self, name, status, location):
+        device = Device(
+            name=name,
+            status=status,
+            location=location,
+        )
 
-    raise HTTPException(
-        status_code=404,
-        detail="Device not found"
-    )
+        self.db.add(device)
+        self.db.commit()
+        self.db.refresh(device)
+
+        return device
+
+    def update_device(self, device_id, name, status, location):
+        device = self.get_device(device_id)
+
+        if not device:
+            return None
+
+        device.name = name
+        device.status = status
+        device.location = location
+
+        self.db.commit()
+        self.db.refresh(device)
+
+        return device
+
+    def delete_device(self, device_id):
+        device = self.get_device(device_id)
+
+        if not device:
+            return False
+
+        self.db.delete(device)
+        self.db.commit()
+
+        return True

@@ -1,8 +1,16 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
-class Device(BaseModel):
+class DeviceCreate(BaseModel):
+    name: str
+    status: str
+    location: str
+
+
+class DeviceResponse(BaseModel):
     id: int
     name: str
     status: str
     location: str
+
+    model_config = ConfigDict(from_attributes=True)
