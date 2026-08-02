@@ -36,6 +36,21 @@ services:
     restart: unless-stopped
 
 
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: cloudpulse-frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+
   prometheus:
     image: prom/prometheus:latest
 
