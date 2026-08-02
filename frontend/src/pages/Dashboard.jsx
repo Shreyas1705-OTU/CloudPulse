@@ -9,9 +9,16 @@ import {
     Database,
 } from "lucide-react";
 
+import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import MetricCard from "../components/MetricCard";
 import SectionCard from "../components/SectionCard";
+
+import DeviceStatus from "../components/DeviceStatus";
+
+import TemperatureChart from "../components/TemperatureChart";
+import HumidityChart from "../components/HumidityChart";
+import BatteryChart from "../components/BatteryChart";
 
 import {
     getDevices,
@@ -47,9 +54,7 @@ export default function Dashboard() {
             setReadings(readingData);
             setAlerts(alertData);
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.error(err);
 
@@ -61,174 +66,229 @@ export default function Dashboard() {
 
     return (
 
-        <div className="min-h-screen bg-slate-950">
+        <div className="flex bg-slate-950 min-h-screen">
 
-            <Header />
+            <Sidebar />
 
-            <div className="max-w-7xl mx-auto p-8">
+            <div className="flex-1">
 
-                {/* KPI Cards */}
+                <Header />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                <div className="p-8">
 
-                    <MetricCard
-                        title="Temperature"
-                        value={latest ? latest.temperature : "--"}
-                        unit="°C"
-                        color="bg-red-500/20"
-                        icon={<Thermometer className="text-red-400" />}
-                    />
+                    {/* KPI CARDS */}
 
-                    <MetricCard
-                        title="Humidity"
-                        value={latest ? latest.humidity : "--"}
-                        unit="%"
-                        color="bg-blue-500/20"
-                        icon={<Droplets className="text-blue-400" />}
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
 
-                    <MetricCard
-                        title="Battery"
-                        value={latest ? latest.battery : "--"}
-                        unit="%"
-                        color="bg-green-500/20"
-                        icon={<Battery className="text-green-400" />}
-                    />
+                        <MetricCard
+                            title="Temperature"
+                            value={latest ? latest.temperature : "--"}
+                            unit="°C"
+                            color="bg-red-500/20"
+                            icon={<Thermometer className="text-red-400" />}
+                        />
 
-                    <MetricCard
-                        title="Devices"
-                        value={devices.length}
-                        unit=""
-                        color="bg-cyan-500/20"
-                        icon={<Cpu className="text-cyan-400" />}
-                    />
+                        <MetricCard
+                            title="Humidity"
+                            value={latest ? latest.humidity : "--"}
+                            unit="%"
+                            color="bg-blue-500/20"
+                            icon={<Droplets className="text-blue-400" />}
+                        />
 
-                    <MetricCard
-                        title="Readings"
-                        value={readings.length}
-                        unit=""
-                        color="bg-purple-500/20"
-                        icon={<Database className="text-purple-400" />}
-                    />
+                        <MetricCard
+                            title="Battery"
+                            value={latest ? latest.battery : "--"}
+                            unit="%"
+                            color="bg-green-500/20"
+                            icon={<Battery className="text-green-400" />}
+                        />
 
-                    <MetricCard
-                        title="Alerts"
-                        value={alerts.length}
-                        unit=""
-                        color="bg-yellow-500/20"
-                        icon={<Bell className="text-yellow-400" />}
-                    />
+                        <MetricCard
+                            title="Devices"
+                            value={devices.length}
+                            unit=""
+                            color="bg-cyan-500/20"
+                            icon={<Cpu className="text-cyan-400" />}
+                        />
 
-                </div>
+                        <MetricCard
+                            title="Readings"
+                            value={readings.length}
+                            unit=""
+                            color="bg-purple-500/20"
+                            icon={<Database className="text-purple-400" />}
+                        />
 
-                {/* Tables */}
+                        <MetricCard
+                            title="Alerts"
+                            value={alerts.length}
+                            unit=""
+                            color="bg-yellow-500/20"
+                            icon={<Bell className="text-yellow-400" />}
+                        />
 
-                <div className="grid xl:grid-cols-2 gap-6">
+                    </div>
 
-                    <SectionCard title="Latest Readings">
+                    {/* CHARTS */}
 
-                        <table className="w-full text-left">
+                    <div className="grid xl:grid-cols-2 gap-6 mb-8">
 
-                            <thead>
+                        <SectionCard title="Temperature Trend">
 
-                                <tr className="border-b border-slate-700">
+                            <TemperatureChart readings={readings} />
 
-                                    <th className="pb-3">Device</th>
-                                    <th>Temp</th>
-                                    <th>Humidity</th>
-                                    <th>Battery</th>
+                        </SectionCard>
 
-                                </tr>
+                        <SectionCard title="Humidity Trend">
 
-                            </thead>
+                            <HumidityChart readings={readings} />
 
-                            <tbody>
+                        </SectionCard>
 
-                                {readings.slice(0,8).map((reading)=>(
+                    </div>
 
-                                    <tr
-                                        key={reading.id}
-                                        className="border-b border-slate-800 hover:bg-slate-700/20"
-                                    >
+                    <div className="mb-8">
 
-                                        <td className="py-3">
-                                            {reading.device_id}
-                                        </td>
+                        <SectionCard title="Battery Trend">
 
-                                        <td>
-                                            {reading.temperature}°C
-                                        </td>
+                            <BatteryChart readings={readings} />
 
-                                        <td>
-                                            {reading.humidity}%
-                                        </td>
+                        </SectionCard>
 
-                                        <td>
-                                            {reading.battery}%
-                                        </td>
+                    </div>
+
+                    {/* DEVICE STATUS */}
+
+                    <div className="mb-8">
+
+                        <SectionCard title="Device Status">
+
+                            <DeviceStatus devices={devices} />
+
+                        </SectionCard>
+
+                    </div>
+
+                    {/* TABLES */}
+
+                    <div className="grid xl:grid-cols-2 gap-6">
+
+                        <SectionCard title="Latest Readings">
+
+                            <table className="w-full">
+
+                                <thead>
+
+                                    <tr className="border-b border-slate-700">
+
+                                        <th className="text-left py-3">
+                                            Device
+                                        </th>
+
+                                        <th className="text-left">
+                                            Temp
+                                        </th>
+
+                                        <th className="text-left">
+                                            Humidity
+                                        </th>
+
+                                        <th className="text-left">
+                                            Battery
+                                        </th>
 
                                     </tr>
 
-                                ))}
+                                </thead>
 
-                            </tbody>
+                                <tbody>
 
-                        </table>
+                                    {readings.slice(0, 8).map((reading) => (
 
-                    </SectionCard>
+                                        <tr
+                                            key={reading.id}
+                                            className="border-b border-slate-800 hover:bg-slate-800"
+                                        >
 
-                    <SectionCard title="Recent Alerts">
+                                            <td className="py-3">
 
-                        {alerts.length===0 && (
+                                                Device {reading.device_id}
 
-                            <p className="text-slate-400">
+                                            </td>
 
-                                No alerts.
+                                            <td>
 
-                            </p>
+                                                {reading.temperature}°C
 
-                        )}
+                                            </td>
 
-                        {alerts.slice(0,8).map((alert)=>(
+                                            <td>
 
-                            <div
-                                key={alert.id}
-                                className="flex justify-between items-center border-b border-slate-700 py-4"
-                            >
+                                                {reading.humidity}%
 
-                                <div>
+                                            </td>
 
-                                    <p className="font-semibold">
+                                            <td>
 
-                                        {alert.message}
+                                                {reading.battery}%
 
-                                    </p>
+                                            </td>
 
-                                    <p className="text-sm text-slate-400">
+                                        </tr>
 
-                                        Device {alert.device_id}
+                                    ))}
 
-                                    </p>
+                                </tbody>
+
+                            </table>
+
+                        </SectionCard>
+
+                        <SectionCard title="Recent Alerts">
+
+                            {alerts.slice(0, 8).map((alert) => (
+
+                                <div
+                                    key={alert.id}
+                                    className="flex justify-between items-center py-4 border-b border-slate-700"
+                                >
+
+                                    <div>
+
+                                        <div className="font-semibold text-white">
+
+                                            {alert.message}
+
+                                        </div>
+
+                                        <div className="text-sm text-slate-400">
+
+                                            Device {alert.device_id}
+
+                                        </div>
+
+                                    </div>
+
+                                    <span
+                                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                                            alert.severity === "HIGH"
+                                                ? "bg-red-600"
+                                                : "bg-yellow-600"
+                                        }`}
+                                    >
+
+                                        {alert.severity}
+
+                                    </span>
 
                                 </div>
 
-                                <span
-                                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                                        alert.severity==="HIGH"
-                                            ? "bg-red-600"
-                                            : "bg-yellow-600"
-                                    }`}
-                                >
+                            ))}
 
-                                    {alert.severity}
+                        </SectionCard>
 
-                                </span>
-
-                            </div>
-
-                        ))}
-
-                    </SectionCard>
+                    </div>
 
                 </div>
 
