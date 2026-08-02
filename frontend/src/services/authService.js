@@ -1,19 +1,19 @@
-import axios from "axios";
-
-const API = "http://localhost:8000/api/v1/auth";
+import api from "./api";
 
 export async function login(username, password) {
+
     const form = new URLSearchParams();
 
     form.append("username", username);
     form.append("password", password);
 
-    const response = await axios.post(
-        `${API}/login`,
+    const response = await api.post(
+        "/auth/login",
         form,
         {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type":
+                    "application/x-www-form-urlencoded",
             },
         }
     );
@@ -22,8 +22,9 @@ export async function login(username, password) {
 }
 
 export async function getCurrentUser(token) {
-    const response = await axios.get(
-        `${API}/me`,
+
+    const response = await api.get(
+        "/auth/me",
         {
             headers: {
                 Authorization: `Bearer ${token}`,

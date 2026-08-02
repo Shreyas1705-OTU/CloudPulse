@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.core.security import get_current_user
 from app.database.session import get_db
 from app.schemas.reading import (
     ReadingCreate,
@@ -21,6 +22,7 @@ router = APIRouter(
 )
 def create_reading(
     reading: ReadingCreate,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     service = ReadingService(db)
@@ -38,6 +40,7 @@ def create_reading(
     response_model=list[ReadingResponse],
 )
 def get_all_readings(
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     service = ReadingService(db)
@@ -51,6 +54,7 @@ def get_all_readings(
 )
 def get_device_readings(
     device_id: int,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     service = ReadingService(db)
