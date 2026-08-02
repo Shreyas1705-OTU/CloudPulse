@@ -17,6 +17,7 @@ services:
 
     restart: unless-stopped
 
+
   backend:
     build:
       context: ./backend
@@ -34,5 +35,41 @@ services:
 
     restart: unless-stopped
 
+
+  prometheus:
+    image: prom/prometheus:latest
+
+    container_name: cloudpulse-prometheus
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+
+  grafana:
+    image: grafana/grafana-oss:latest
+
+    container_name: cloudpulse-grafana
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+    depends_on:
+      - prometheus
+
+    restart: unless-stopped
+
+
 volumes:
   cloudpulse-postgres-data:
+  grafana-storage:
