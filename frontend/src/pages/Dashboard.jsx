@@ -15,7 +15,6 @@ import MetricCard from "../components/MetricCard";
 import SectionCard from "../components/SectionCard";
 
 import DeviceStatus from "../components/DeviceStatus";
-
 import TemperatureChart from "../components/TemperatureChart";
 import HumidityChart from "../components/HumidityChart";
 import BatteryChart from "../components/BatteryChart";
@@ -50,11 +49,17 @@ export default function Dashboard() {
             const readingData = await getReadings();
             const alertData = await getAlerts();
 
-            setDevices(deviceData);
-            setReadings(readingData);
-            setAlerts(alertData);
+            console.log("Devices:", deviceData);
+            console.log("Readings:", readingData);
+            console.log("Alerts:", alertData);
 
-        } catch (err) {
+            setDevices(Array.isArray(deviceData) ? deviceData : []);
+            setReadings(Array.isArray(readingData) ? readingData : []);
+            setAlerts(Array.isArray(alertData) ? alertData : []);
+
+        }
+
+        catch (err) {
 
             console.error(err);
 
@@ -76,13 +81,11 @@ export default function Dashboard() {
 
                 <div className="p-8">
 
-                    {/* KPI CARDS */}
-
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
 
                         <MetricCard
                             title="Temperature"
-                            value={latest ? latest.temperature : "--"}
+                            value={latest?.temperature ?? "--"}
                             unit="°C"
                             color="bg-red-500/20"
                             icon={<Thermometer className="text-red-400" />}
@@ -90,7 +93,7 @@ export default function Dashboard() {
 
                         <MetricCard
                             title="Humidity"
-                            value={latest ? latest.humidity : "--"}
+                            value={latest?.humidity ?? "--"}
                             unit="%"
                             color="bg-blue-500/20"
                             icon={<Droplets className="text-blue-400" />}
@@ -98,7 +101,7 @@ export default function Dashboard() {
 
                         <MetricCard
                             title="Battery"
-                            value={latest ? latest.battery : "--"}
+                            value={latest?.battery ?? "--"}
                             unit="%"
                             color="bg-green-500/20"
                             icon={<Battery className="text-green-400" />}
@@ -130,20 +133,14 @@ export default function Dashboard() {
 
                     </div>
 
-                    {/* CHARTS */}
-
                     <div className="grid xl:grid-cols-2 gap-6 mb-8">
 
                         <SectionCard title="Temperature Trend">
-
                             <TemperatureChart readings={readings} />
-
                         </SectionCard>
 
                         <SectionCard title="Humidity Trend">
-
                             <HumidityChart readings={readings} />
-
                         </SectionCard>
 
                     </div>
@@ -151,26 +148,18 @@ export default function Dashboard() {
                     <div className="mb-8">
 
                         <SectionCard title="Battery Trend">
-
                             <BatteryChart readings={readings} />
-
                         </SectionCard>
 
                     </div>
-
-                    {/* DEVICE STATUS */}
 
                     <div className="mb-8">
 
                         <SectionCard title="Device Status">
-
                             <DeviceStatus devices={devices} />
-
                         </SectionCard>
 
                     </div>
-
-                    {/* TABLES */}
 
                     <div className="grid xl:grid-cols-2 gap-6">
 
@@ -182,21 +171,10 @@ export default function Dashboard() {
 
                                     <tr className="border-b border-slate-700">
 
-                                        <th className="text-left py-3">
-                                            Device
-                                        </th>
-
-                                        <th className="text-left">
-                                            Temp
-                                        </th>
-
-                                        <th className="text-left">
-                                            Humidity
-                                        </th>
-
-                                        <th className="text-left">
-                                            Battery
-                                        </th>
+                                        <th className="text-left py-3">Device</th>
+                                        <th className="text-left">Temp</th>
+                                        <th className="text-left">Humidity</th>
+                                        <th className="text-left">Battery</th>
 
                                     </tr>
 
@@ -204,36 +182,22 @@ export default function Dashboard() {
 
                                 <tbody>
 
-                                    {readings.slice(0, 8).map((reading) => (
+                                    {readings.slice(0,8).map((reading)=>(
 
                                         <tr
                                             key={reading.id}
-                                            className="border-b border-slate-800 hover:bg-slate-800"
+                                            className="border-b border-slate-800"
                                         >
 
                                             <td className="py-3">
-
                                                 Device {reading.device_id}
-
                                             </td>
 
-                                            <td>
+                                            <td>{reading.temperature}°C</td>
 
-                                                {reading.temperature}°C
+                                            <td>{reading.humidity}%</td>
 
-                                            </td>
-
-                                            <td>
-
-                                                {reading.humidity}%
-
-                                            </td>
-
-                                            <td>
-
-                                                {reading.battery}%
-
-                                            </td>
+                                            <td>{reading.battery}%</td>
 
                                         </tr>
 
@@ -247,31 +211,27 @@ export default function Dashboard() {
 
                         <SectionCard title="Recent Alerts">
 
-                            {alerts.slice(0, 8).map((alert) => (
+                            {alerts.slice(0,8).map((alert)=>(
 
                                 <div
                                     key={alert.id}
-                                    className="flex justify-between items-center py-4 border-b border-slate-700"
+                                    className="flex justify-between py-4 border-b border-slate-700"
                                 >
 
                                     <div>
 
-                                        <div className="font-semibold text-white">
-
+                                        <div className="text-white font-semibold">
                                             {alert.message}
-
                                         </div>
 
-                                        <div className="text-sm text-slate-400">
-
+                                        <div className="text-slate-400 text-sm">
                                             Device {alert.device_id}
-
                                         </div>
 
                                     </div>
 
                                     <span
-                                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                                        className={`px-3 py-1 rounded-full text-sm ${
                                             alert.severity === "HIGH"
                                                 ? "bg-red-600"
                                                 : "bg-yellow-600"
