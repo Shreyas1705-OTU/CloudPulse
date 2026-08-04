@@ -20,7 +20,6 @@ spec:
     spec:
       containers:
         - name: grafana
-
           image: grafana/grafana-oss:latest
           imagePullPolicy: IfNotPresent
 
@@ -33,6 +32,19 @@ spec:
 
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: admin123
+
+          volumeMounts:
+            - name: grafana-dashboard
+              mountPath: /etc/grafana/provisioning/dashboards/dashboard.json
+              subPath: dashboard.json
+
+            - name: grafana-dashboard-provider
+              mountPath: /etc/grafana/provisioning/dashboards/dashboard.yaml
+              subPath: dashboard.yaml
+
+            - name: grafana-datasource
+              mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
+              subPath: prometheus.yaml
 
           readinessProbe:
             httpGet:
@@ -47,3 +59,16 @@ spec:
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 15
+
+      volumes:
+        - name: grafana-dashboard
+          configMap:
+            name: grafana-dashboard
+
+        - name: grafana-dashboard-provider
+          configMap:
+            name: grafana-dashboard-provider
+
+        - name: grafana-datasource
+          configMap:
+            name: grafana-datasource
