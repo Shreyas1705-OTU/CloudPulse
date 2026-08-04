@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://cloudpulse:cloudpulse123@localhost:5432/cloudpulse",
+    "postgresql://cloudpulse:cloudpulse123@postgres:5432/cloudpulse",
 )
 
 engine = create_engine(

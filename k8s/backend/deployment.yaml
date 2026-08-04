@@ -27,9 +27,40 @@ spec:
           ports:
             - containerPort: 8000
 
-          envFrom:
-            - configMapRef:
-                name: backend-config
+          env:
+
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudpulse-config
+                  key: APP_NAME
+
+            - name: APP_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudpulse-config
+                  key: APP_VERSION
+
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudpulse-config
+                  key: ENVIRONMENT
+
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudpulse-config
+                  key: DEBUG
+
+            - name: DATABASE_URL
+              value: "postgresql://cloudpulse:cloudpulse123@postgres:5432/cloudpulse"
+
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloudpulse-secret
+                  key: JWT_SECRET_KEY
 
           readinessProbe:
             httpGet:

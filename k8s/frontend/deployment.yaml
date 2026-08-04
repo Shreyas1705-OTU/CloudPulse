@@ -19,7 +19,6 @@ spec:
 
     spec:
       containers:
-
         - name: frontend
 
           image: cloudpulse-frontend:latest
@@ -27,3 +26,17 @@ spec:
 
           ports:
             - containerPort: 80
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
