@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: grafana
+  namespace: cloudpulse
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: grafana
+
+  template:
+    metadata:
+      labels:
+        app: grafana
+
+    spec:
+      containers:
+        - name: grafana
+
+          image: grafana/grafana-oss:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin123
+
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 15

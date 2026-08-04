@@ -1,15 +1,33 @@
-# Python virtual environment
+# ----------------------------
+# Python
+# ----------------------------
+venv/
 backend/venv/
-
-# Python cache
 __pycache__/
 *.py[cod]
+*.pyo
 
-# Environment variables
+# ----------------------------
+# Node
+# ----------------------------
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# ----------------------------
+# Environment
+# ----------------------------
 .env
+.env.*
 
-# VS Code settings
+# ----------------------------
+# IDE
+# ----------------------------
 .vscode/
+.idea/
 
-# macOS
+# ----------------------------
+# OS
+# ----------------------------
 .DS_Store
+Thumbs.db
