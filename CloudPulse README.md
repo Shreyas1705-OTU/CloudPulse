@@ -78,7 +78,8 @@ CloudPulse runs as a multi-service application inside a **Kind Kubernetes cluste
 
 ### High-Level Architecture Diagram
 
-![CloudPulse Architecture](docs/diagrams/architecture.png)
+<img width="4950" height="5460" alt="Architecture Diagram" src="https://github.com/user-attachments/assets/2411bcda-315e-4c80-8302-13e709648571" />
+
 
 **Architecture summary:**
 - The **user browser** accesses CloudPulse through **NGINX Ingress** at `http://localhost`
@@ -94,25 +95,30 @@ CloudPulse runs as a multi-service application inside a **Kind Kubernetes cluste
 
 ### Login Page
 
-![CloudPulse Login](docs/screenshots/cloudpulse-login.png)
+<img width="1920" height="1080" alt="CloudPulse_Login" src="https://github.com/user-attachments/assets/fefd3688-8bee-4f20-aec2-17ab79ec304c" />
+
 
 ### Main Application Dashboard
 
-![CloudPulse Main Dashboard](docs/screenshots/cloudpulse-dashboard.png)
+<img width="1920" height="1020" alt="CloudPulse_Dashboard" src="https://github.com/user-attachments/assets/9b78f704-88e7-4edb-b26a-6b3fbac1f8c1" />
+
 
 ### Prometheus Query Validation
 
 The screenshot below shows the `up` query successfully returning the backend target.
 
-![Prometheus up Query](docs/screenshots/prometheus-up-query.png)
+<img width="1920" height="1080" alt="Prometheus" src="https://github.com/user-attachments/assets/e19ac7a8-ab30-4f3d-ac95-bc73379ac8f3" />
+
 
 ### Grafana Monitoring Dashboard
 
-![Grafana Monitoring Dashboard](docs/screenshots/grafana-dashboard.png)
+<img width="1920" height="1506" alt="Grafana_Dashboard" src="https://github.com/user-attachments/assets/35475e4d-3926-459e-987f-faf79106ddad" />
+
 
 ### Successful Automated Deployment Output
 
-![Deployment Success Output](docs/screenshots/deployment-success.png)
+<img width="1759" height="716" alt="Deployment" src="https://github.com/user-attachments/assets/43a6b5a7-cca4-4b54-9eb6-2c67059fac39" />
+
 
 ---
 
