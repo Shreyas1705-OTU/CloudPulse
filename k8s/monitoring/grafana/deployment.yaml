@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana-oss:latest
+          image: grafana/grafana:12.2.0
           imagePullPolicy: IfNotPresent
 
           ports:
