@@ -266,6 +266,9 @@ CloudPulse now supports a structured deployment flow using scripts.
 
 ## Deployment Scripts
 
+<img width="2234" height="7430" alt="Deployment Automation" src="https://github.com/user-attachments/assets/dabc5582-bce1-4b21-8914-77c0c5deb63c" />
+
+
 ### `cleanup.sh`
 Deletes the existing Kind cluster and helps ensure a clean cold start.
 
@@ -343,7 +346,8 @@ The Grafana dashboard displays:
 
 ### Monitoring Flow Diagram
 
-![Monitoring Flow](docs/diagrams/monitoring-flow.png)
+<img width="5179" height="780" alt="Monitering data flow" src="https://github.com/user-attachments/assets/a5748820-1461-4244-a914-c92987b172db" />
+
 
 ---
 
@@ -355,7 +359,8 @@ This was achieved through repeated cold-start testing.
 
 ### Cold-Start Improvement Summary
 
-![Cold Start Validation](docs/diagrams/cold-start-validation.png)
+<img width="1240" height="5895" alt="Testing" src="https://github.com/user-attachments/assets/645af8ab-8180-4589-aa3b-047733ead0b8" />
+
 
 ### What Was Improved Across Iterations
 
